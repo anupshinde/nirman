@@ -1,0 +1,72 @@
+//console.log("Categories being generated from Generator");
+//console.log(CurrentInputDir,CurrentOutputDir, CurrentFile);
+
+var outpath = CurrentOutputDir;
+var fs = Fso;
+
+function createCategoryPages() {
+	var posts = _.chain(Meta.posts.Elements)
+				.sortBy(function(post) {
+					if(_.isUndefined(post.date)) {
+						return -(new Date());
+					}
+					return -Date.parse(post.date);
+				})
+				.map(function(post) {
+					if(!_.isUndefined(post.tags) && post.tags !=null ) {
+						post.tags = post.tags.split(",");
+						for(var i=0;i < post.tags.length; i++) {         /*>*/
+							post.tags[i]= post.tags[i].trim();
+							if(_.contains(post.tags[i]," ")) {
+								//post.tags[i] = post.tags[i].split(" ").join("-");
+							}
+						}
+						
+					}
+					return post;
+				}).compact()
+				.filter(function(item) {
+					return !item.isDraft;
+				})
+				.value();
+
+	var tagsToPosts = {};
+	for(var i=0;i<posts.length;i++) {
+		var tagsArr = posts[i].tags;
+		if(!_.isUndefined(tagsArr) && tagsArr!=null) {
+			for(var j=0;j<tagsArr.length;j++) {
+				var tag = tagsArr[j].toLowerCase();
+				if(_.contains(tag," ")) {
+					tag = tag.split(" ").join("-");
+				}
+				if(_.contains(tag,"#")) {
+					tag = tag.split("#").join("-sharp");
+				}
+				
+				if(_.isUndefined(tagsToPosts[tag])) {
+					tagsToPosts[tag] = {
+						posts:[], 
+						title: tagsArr[j],
+						moment: Moment,
+						_: _,
+						Site: Site
+					};
+				}				
+				tagsToPosts[tag].posts.push(posts[i]);
+			}
+		}
+	}
+	
+	for(var tag in tagsToPosts) {
+		//console.log(tag);
+		var tmpl = NunjucksEnv.getTemplate("tag.html");
+		var op = tmpl.render(tagsToPosts[tag]);
+		
+		fs.writeFile(path.join(outpath,tag+".html"), op);
+	}
+				
+	//console.log("Completed creating categories");
+}
+
+
+createCategoryPages();

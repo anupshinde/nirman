@@ -1,0 +1,93 @@
+---
+layout: base
+ApplyTemplateToContent: true
+---
+
+-->>code>>--
+
+scope.getPosts = function() {
+ var _ = scope._;
+ var posts = scope._
+				.chain(scope.Meta.posts.Elements)
+				.sortBy(function(post) {
+					if(scope._.isUndefined(post.date)) {
+						return -(new Date());
+					}
+					return -Date.parse(post.date);
+				})
+				.map(function(post) {
+					//console.log(post);
+					if(!scope._.isUndefined(post.tags) && post.tags !=null ) {
+						post.tags = post.tags.split(",");
+						for(var i=0;i < post.tags.length; i++) {         /*>*/
+							post.tags[i]= post.tags[i].trim();
+							if(_.contains(post.tags[i]," ")) {
+								//console.log("WARNING: Tag contains white-space: ", post.tags[i]);
+							}
+						}
+						
+					}
+					return post;
+				}).compact()
+				.filter(function(item) {
+					return !item.isDraft;
+				})
+				.value();
+	//console.log(posts);
+	
+  return posts;
+}
+
+
+scope.paginate(scope.getPosts(), {
+	pageSize: 3
+});
+
+	
+-->>code>>--
+
+{% for post in PageInfo.Elements %}
+
+	<div class="post">
+		<h2>
+			<a href="posts/{{post.slug}}" class="post_title">
+				{{ post.title  }} 
+			</a>
+		</h2>
+		
+		<p>
+			{{ post.abstract }}
+		</p>
+		<p>
+			<em>
+			<i class="icon-time"></i> &nbsp;&nbsp;{{moment(post.date).format("D MMMM YYYY")}}</em>
+			{% if not post.disallow_comments %}
+				, &nbsp;&nbsp;
+				<a href="posts/{{post.slug}}#disqus_thread">Comments</a>
+			{%endif%}
+
+			<br/>
+			{% if post.tags %}
+			<p>
+				{% for tag in post.tags %}
+					<a href="/tag/{{ tag.toLowerCase().split(' ').join('-').split('#').join('-sharp') }}">
+					<i class="icon-tag"></i> {{tag}}
+					</a> 
+					&nbsp;&nbsp;
+				{% endfor %}
+			</p>
+			{% endif %}
+		</p>
+	</div>
+{% endfor %}
+	
+
+<ul class="pager">
+{% if PageInfo.HasPrev %}
+	<li class="previous"><a href="{{PageInfo.PrevPage.RelURL}}">&larr; Newer</a></li>
+{% endif %}
+{% if PageInfo.HasNext %}
+	<li class="next"><a href="{{PageInfo.NextPage.RelURL}}">Older &rarr;</a></li>
+{% endif %}
+</ul>
+

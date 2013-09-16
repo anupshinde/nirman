@@ -1,0 +1,30 @@
+{
+  "author": "Anup Shinde",
+  "name": "nirman",
+  "description": "Static site generator",
+  "version": "0.1.1",
+  "repository": {
+    "url": ""
+  },
+  "main": "./lib/nirman",
+  "keywords": [
+    "static",
+    "generator",
+    "markdown"
+  ],
+  "bin": {
+    "nirman": "./bin/nirman"
+  },
+  "dependencies": {
+    "connect": "2.8.8",
+    "js-yaml": "2.1.0",
+    "nunjucks": "0.1.10",
+    "moment": "2.1.0",
+    "showdown": "0.3.1",
+    "underscore": "1.5.1",
+    "commander": "2.0.0"
+  },
+  "engines": {
+    "node": "*"
+  }
+}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	{{ title }} - {{Site.title}}
+{% endblock %}
+{% set nojumbotron = true %}
+{% block content %}
+	<h1> <a href="" class="post_title">{{ title }}</a></h1>
+	
+	<div class="row" style="padding-top:5px;">
+		<div class="col-sm-2">
+			{% include "tweetbutton.html" %} 
+		</div>
+		<div class="col-sm-2">
+			{% include "gplusonebutton.html" %}
+		</div>
+	</div>
+	<div class="row" style="padding-top:5px;">
+		<div class="col-sm-2">
+			{% if not post.disallow_comments %}
+				<a><em><a href="#disqus_thread">Comments</a></em></a>
+			{%endif%}
+		</div>
+		{% if tags %}
+		<div class="col-md-12">
+			<br/>
+			<br/>
+			{% set tgs = tags.split(",") %}
+			{% for tag in tgs %}
+				{% set tag = tag.trim() %}
+				<a href="/tag/{{ tag.toLowerCase().split(' ').join('-').split('#').join('-sharp') }}">
+				<i class="icon-tag"></i> {{tag}}
+				</a> 
+				&nbsp;&nbsp;
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+	
+	<hr/>
+	<span>
+	{{ content }}
+	
+	{% if IsWikipediaStuff %}
+		<br/><br/>
+		<h4>This sample content is a full or partial copy from <a href="http://en.wikipedia.org/" target="_blank">Wikipedia</a></h4>
+	{% endif %}
+
+	{% if src %}
+		<br/><br/>
+		<h3>This sample content is a full or partial copy from <a href="{{src}}" target="_blank">{{src}}</a></h3>
+	{% endif %}
+	</span>
+	<hr/>
+	{% include "comments.html" %}
+
+{% endblock %}
+	

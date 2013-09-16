@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+	<h3><i class="icon-tag"></i> &nbsp;&nbsp; <span style="text-transform:capitalize;">{{ title }}</span></h3>
+	
+	{% for post in posts %}
+
+		<div class="post">
+			<h3>
+				<a href="/posts/{{post.slug}}" class="post_title">
+					{{ post.title  }} 
+				</a>
+			</h3>
+			
+			<p>
+				{{ post.abstract }}
+			</p>
+			<p>
+				<em>
+				<i class="icon-time"></i> &nbsp;&nbsp;{{moment(post.date).format("D MMMM YYYY")}}</em>
+				{% if not post.disallow_comments %}
+					, &nbsp;&nbsp;
+					<a href="/posts/{{post.slug}}#disqus_thread">Comments</a>
+				{%endif%}
+				<br/>
+				{% if post.tags %}
+				<p>
+					{% for tag in post.tags %}
+						<a href="/tag/{{ tag.toLowerCase().split(' ').join('-').split('#').join('-sharp') }}">
+						<i class="icon-tag"></i> {{tag}}
+						</a>
+					{% endfor %}
+				</p>
+				{% endif %}
+			</p>
+		</div>
+	{% endfor %}
+		
+
+{% endblock %}
