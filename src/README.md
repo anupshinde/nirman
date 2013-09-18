@@ -1,4 +1,0 @@
-﻿nirman
-======
-
-Static site generator
