@@ -1,7 +1,8 @@
 #Nirman 
-## - Flexible Static Site Generator for Node JS
+## Flexible Static Site Generator for Node JS
 ---
 
+## Usage 
 Install Nirman
 
     npm install -g nirman
@@ -40,7 +41,47 @@ Structure:
 
 ```
 
-##Documentation:
+## Features
+
+
+1. Flexibility to arrange your site contents - the way you want it. All the stuff goes in "contents" directory.
+
+2. Templating is similar to Jinja templates. Here we use Nunjucks templating
+
+   Additionaly, you can use your content files as your template - This helps avoid cases where you create a one line file just to point to another template file. This feature is optional.
+   
+3. Content metadata is available to your templates directly.
+   
+   Example: If your directory is named "posts", you can access the contents with Meta.posts.Elements
+
+4. Markdown support via Showdown 
+
+5. Generators - Special script files written in JavaScript that are passed the Scope and content Metadata. 
+    
+    You can simply add code here to create your own output.
+
+    Example: You want to create a page listing all the Categories in your content.
+
+6. Front Matter - Configuration for a post/document can be placed as a front-matter at the top of the content file. You can add date, title, or anything that is supported as YAML. All this configuration is available to the Scope of the template
+
+7. Code blocks within content ( &lt;script type="application/x-nirman-code" ).
+
+   Sometimes, you want a modified version of your data. For example: Metadata provides you the list of posts. However, in your content, you may require the post to be sorted/filtered by date/title/category/ (whatever) ... Best is to leave this to you. 
+   
+   With this feature you can add JavaScript-functions to you current template scope. And then use these methods in your template - Helps keeps code clean with code and HTML separation.
+   
+8. Paging support.
+
+    Simply create a code block within your content, get the items, and mention "scope.paginate(options)". The in your content use the paged-date to render content. You require ApplyTemplateToContent = TRUE to use this feature.
+	
+
+Further... 
+I am also looking to add stuff like page-breaks within content to paginate through long articles. 
+
+
+
+
+## Documentation:
 *Detailed Documentation is not available yet*
 
 You can refer to the examples below for implementation details
