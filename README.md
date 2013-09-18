@@ -72,11 +72,8 @@ Structure:
    
 8. Paging support.
 
-    Simply create a code block within your content, get the items, and mention "scope.paginate(options)". The in your content use the paged-date to render content. You require ApplyTemplateToContent = TRUE to use this feature.
+    Simply create a code block within your content, get the items, and mention "scope.paginate(options)". Then in your content use the paged-data to render content. You require ApplyTemplateToContent = TRUE to use this feature.
 	
-
-Further... 
-I am also looking to add stuff like page-breaks within content to paginate through long articles. 
 
 
 
