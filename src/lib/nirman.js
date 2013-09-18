@@ -29,6 +29,7 @@ program
   .option('-dbg, --debug', 'Print debug statements')
   .option('-d, --dir [type]', 'Site directory: [dir]', '')
   .option('-p, --port [type]', 'Local server port: [port]', 8888)
+  .option('-nsvr, --noserver', 'Do not start local server', false)
   .parse(process.argv);
 
 //console.log("-"+program.dir+"-"); 
@@ -39,8 +40,6 @@ if(program.dir!='')  {
 	}
 }
 connect_port = program.port;
-
-
 
 var srcdir = path.join(basedir, "contents");
 var outdir = path.join(basedir, "build");
@@ -623,15 +622,17 @@ function doRender() {
 	renderFiles(contentmap);
 	if(program.debug) console.log("Render files complete");
 	
-	for(var d in _watch_dirlist) {
-		var o = _watch_dirlist[d];		
-		if(!o.isWatching) {
-			fs.watch(d, OnContentChange);
-			o.isWatching = true;
-		}
-	}
 	console.log("Render complete!");
-	console.log("Server running at: http://localhost:"+ connect_port + "");
+	if(!program.noserver) {
+		for(var d in _watch_dirlist) {
+			var o = _watch_dirlist[d];		
+			if(!o.isWatching) {
+				fs.watch(d, OnContentChange);
+				o.isWatching = true;
+			}
+		}
+		console.log("Server running at: http://localhost:"+ connect_port + "");
+	}
 }
 
 function OnContentChange(event, filename) {
@@ -745,7 +746,10 @@ function createNewProject(callback) {
 }
 
 function startupStuff() {
-	createServer();
+
+	if(!program.noserver) {
+		createServer();
+	}
 	try {
 		doRender();
 	} catch(e) {
