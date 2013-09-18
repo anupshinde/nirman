@@ -12,11 +12,11 @@ Create a directory for your site.
 	mkdir mysite
 
 
-To create a new [sample site as shown here](http://nirmandemo.anupshinde.com/)
+To create a new <a href="http://nirmandemo.anupshinde.com/" target="_blank">sample site as shown here</a>
 
     nirman --new
 
-It will create a sample blog, generate static HTML and host it at [http://localhost:8888](http://localhost:8888)
+It will create a sample blog, generate static HTML and host it at <a href="http://localhost:8888" target="_blank" >http://localhost:8888</a>
 
 Press ``` Ctrl+C ``` to stop server
 
