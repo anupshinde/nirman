@@ -15,6 +15,7 @@ var jsyaml = require('js-yaml');
 var moment = require('moment');
 var url = require('url');
 var program = require('commander');
+var cheerio = require('cheerio');
 
 
 
@@ -109,32 +110,24 @@ function createFileMap(dir) {
 }
 
 function getCodeSection(content, file_path) {
-	var s = '', code='', cont = content;
+	var code='', cont = content;
+	var cio = cheerio.load(content);
+	var tagsToSelect = "script[type='application/x-nirman-code']";
+	var nirmets = cio(tagsToSelect);	
+	code= nirmets.map(function(i,el) {
+		cont = cont.replace(cio.html(el), ""); // see ### below
+		return cio(this).html();
+	}).join('\n\n');
 	
-	var idx=-1, idx2=-1;
 	
-	s = content.trim();
-	idx = s.indexOf("-->>code>>--");
-	if(idx==0) { 
-	// We first check if this is the matter is at the top. 
-	// if not, we donot want to consider it as front matter
-		s = content;
-		idx = s.indexOf("-->>code>>--");
-		if(idx>=0) {
-			s = s.substring(idx+12);
-			idx2 = s.indexOf("-->>code>>--");	
-			if(idx2>=0) {
-				//matter = "---\n"+s.substring(0,idx2)+"---\n";
-				code =s.substring(0,idx2);
-				cont = content.substring(idx2+idx+24).replace("\n","");
-			}
-		}
-	}
-
-
-	//if(code.trim()!="") console.log("Code is ", code, " And content is ", cont);
+	/* 
+		### 
+		The following doesn't work correctly if you are using templated code within HTML - i.e ApplyTemplateToContent=TRUE
+		cio(tagsToSelect).remove(); 
+		cont = cio.html();
+	*/
+	
 	return { code: code, content: cont};
-	
 }
 
 function getFrontMatterAndData(content, file_path, file_base) {

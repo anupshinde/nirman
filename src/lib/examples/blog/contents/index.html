@@ -3,7 +3,7 @@ layout: base
 ApplyTemplateToContent: true
 ---
 
--->>code>>--
+<script type="application/x-nirman-code">
 
 scope.getPosts = function() {
  var _ = scope._;
@@ -19,7 +19,7 @@ scope.getPosts = function() {
 					//console.log(post);
 					if(!scope._.isUndefined(post.tags) && post.tags !=null ) {
 						post.tags = post.tags.split(",");
-						for(var i=0;i < post.tags.length; i++) {         /*>*/
+						for(var i=0;i < post.tags.length; i++) { 
 							post.tags[i]= post.tags[i].trim();
 							if(_.contains(post.tags[i]," ")) {
 								//console.log("WARNING: Tag contains white-space: ", post.tags[i]);
@@ -43,8 +43,8 @@ scope.paginate(scope.getPosts(), {
 	pageSize: 3
 });
 
-	
--->>code>>--
+</script>
+
 
 {% for post in PageInfo.Elements %}
 
